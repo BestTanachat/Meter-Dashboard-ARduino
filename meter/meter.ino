@@ -10,7 +10,7 @@
 
 Adafruit_8x16minimatrix matrix = Adafruit_8x16minimatrix();
 
-uint8_t counter = 0;
+uint8_t counter = 8;
 const byte interruptPin1 = 14;
 const byte interruptPin2 = 16;
 const int buzzer = 13; //buzzer to arduino pin 13
@@ -129,8 +129,15 @@ void setup() {
   matrix.begin(0x70);  // pass in the address
   matrix.clear();
   while (WiFi.status() != WL_CONNECTED) {
-    Serial.print(".");
-    delay(500); 
+    matrix.clear();
+    matrix.setCursor(counter,0);
+    matrix.print("Connecting");
+    matrix.writeDisplay();
+    counter += 1;
+    delay(500);
+    if (counter >= 100){
+      counter = 8;
+    }
   }
 
   Serial.printf("\nWiFi connected\nIP : ");
@@ -390,4 +397,3 @@ void Data_recv(uint8_t SS) {
     }
   }
 }
-
